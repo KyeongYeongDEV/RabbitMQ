@@ -8,10 +8,60 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  name String?
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // 관계 설정 (1:N) - 한 명의 사용자는 여러 개의 채팅방을 만들 수 있음
+  chatRooms ChatRoom[] 
+  messages  Message[] 
+
+  // ChatRoomUser와의 관계 추가 
+  chatRoomUsers ChatRoomUser[]
 }
 
+model ChatRoom {
+  id        Int      @id @default(autoincrement())
+  ownerId   Int      // 방을 만든 사람의 ID (User와 연결)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 외래 키 설정 (User와 1:N 관계)
+  owner     User     @relation(fields: [ownerId], references: [id])
+
+  // 관계 설정 (1:N) - 한 채팅방에는 여러 개의 메시지가 있을 수 있음
+  messages  Message[]
+
+  // N:M 관계 (ChatRoomUser 테이블을 통해 사용자와 연결)
+  participants ChatRoomUser[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  userId    Int      // 메시지를 보낸 사용자 ID
+  chatRoomId Int     // 메시지가 속한 채팅방 ID
+  name      String
+  text      String
+  createdAt DateTime @default(now())
+
+  // 외래 키 설정 (User와 연결)
+  user      User     @relation(fields: [userId], references: [id])
+
+  // 외래 키 설정 (ChatRoom과 연결)
+  chatRoom  ChatRoom @relation(fields: [chatRoomId], references: [id])
+}
+
+model ChatRoomUser {
+  id        Int      @id @default(autoincrement())
+  userId    Int    
+  chatRoomId Int  
+
+  // 외래 키 설정 (User와 ChatRoom 연결)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatRoom  ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+
+  // 사용자와 채팅방의 조합은 중복되지 않도록 설정
+  @@unique([userId, chatRoomId])
+}
