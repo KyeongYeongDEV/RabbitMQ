@@ -20,7 +20,18 @@ let UserService = class UserService {
     async getAllUsers() {
         return this.prisma.user.findMany();
     }
-    async createUser(email, name) {
+    async getUserById(id) {
+        return this.prisma.user.findUnique({
+            where: { id },
+        });
+    }
+    async createUser({ email, name }) {
+        const existingUser = await this.prisma.user.findUnique({
+            where: { email },
+        });
+        if (existingUser) {
+            throw new Error('이미 존재하는 이메일입니다.');
+        }
         return this.prisma.user.create({
             data: { email, name },
         });

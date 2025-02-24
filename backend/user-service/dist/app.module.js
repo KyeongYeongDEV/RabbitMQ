@@ -10,19 +10,18 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const prisma_service_1 = require("./prisma/prisma.service");
-const prisma_module_1 = require("./prisma/prisma.module");
 const user_service_1 = require("./user/user.service");
 const user_controller_1 = require("./user/user.controller");
-const user_module_1 = require("./user/user.module");
+const prisma_service_1 = require("./prisma/prisma.service");
+const prisma_module_1 = require("./prisma/prisma.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule, user_module_1.UserModule],
+        imports: [prisma_module_1.PrismaModule],
         controllers: [app_controller_1.AppController, user_controller_1.UserController],
-        providers: [app_service_1.AppService, prisma_service_1.PrismaService, user_service_1.UserService],
+        providers: [app_service_1.AppService, user_service_1.UserService, prisma_service_1.PrismaService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
