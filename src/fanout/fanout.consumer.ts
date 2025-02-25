@@ -11,15 +11,15 @@ export class FanoutConsumer implements OnModuleInit {
   async onModuleInit() {
     // 모든 Queue가 동일한 메시지를 받음 (Broadcast)
     await this.rabbitMQService.consume('queue-logs', 'fanout-exchange', '', (msg) => {
-      console.log('[fanout] [LOGS] Received:', msg);
+      console.log('[fanout-consumer] [LOGS] Received:', msg);
     });
 
     await this.rabbitMQService.consume('queue-alerts', 'fanout-exchange', '', (msg) => {
-      console.log('[fanout] [ALERTS] Received:', msg);
+      console.log('[fanout-consumer] [ALERTS] Received:', msg);
     });
 
     await this.rabbitMQService.consume('queue-notifications', 'fanout-exchange', '', (msg) => {
-      console.log('[fanout] [NOTIFICATIONS] Received:', msg);
+      console.log('[fanout-consumer] [NOTIFICATIONS] Received:', msg);
     });
   }
 }

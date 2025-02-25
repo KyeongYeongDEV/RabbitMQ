@@ -29,12 +29,14 @@ async function bootstrap() {
       await topicPublisher.sendMessage('news.sports', '🏀 Sports news update!');
       await topicPublisher.sendMessage('news.weather', '🌦 Weather forecast for today');
 
+      // ✅ Fanout Exchange 테스트 (모든 Queue에 메시지 전송)
+      await fanoutPublisher.sendMessage('🚨 System alert: Maintenance in 5 minutes!');
+
       // ✅ Headers Exchange 테스트 (x-match 사용)
       await headersPublisher.sendMessage({ 'x-match': 'any', user: 'vip' }, '💎 VIP 회원 메시지');
       await headersPublisher.sendMessage({ 'x-match': 'all', user: 'vip', role: 'admin' }, '🔑 VIP 관리자 메시지');
 
-      // ✅ Fanout Exchange 테스트 (모든 Queue에 메시지 전송)
-      await fanoutPublisher.sendMessage('🚨 System alert: Maintenance in 5 minutes!');
+      
 
       console.log('✅ All messages have been sent successfully.');
     } catch (error) {

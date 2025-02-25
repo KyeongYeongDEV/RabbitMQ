@@ -15,12 +15,12 @@ export class DirectConsumer implements OnModuleInit {
   async onModuleInit() {
     // info 라우팅 키를 가진 메세지를 소비하는 Queue
     await this.rabbitMQService.consume('queue-info', 'direct-exchane', 'info', (msg) => {
-      console.log('[direct][Info] Received : ', msg);
+      console.log('[direct-consumer][Info] Received : ', msg);
     });
   
     // error 라우팅 키를 가진 메세지를 소비하는 Queue
     await this.rabbitMQService.consume('queue-error', 'direct-exchange', 'info', (msg) => {
-      console.log('[direct][Error] Received : ', msg);
+      console.log('[direct-consumer][Error] Received : ', msg);
     })
   } 
 }
